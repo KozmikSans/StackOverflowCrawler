@@ -32,8 +32,12 @@ class UI:
                 try:
                     self.browser = webdriver.Firefox()
                     self.browser.get(self.cr.sorted[0].url)
-                except: # in case there is no ideal site, meaning the stackoverflow website was not found
-                    pass
+                except:
+                    try:
+                        self.browser = webdriver.Chrome()
+                        self.browser.get(self.cr.sorted[0].url)
+                    except: # in case there is no ideal site, meaning the stackoverflow website was not found
+                        pass
             self.didbig = True
             self.pr("If you are not satisfied with your results. We can try to search other sites for reasonable thoughts. Do you wish to proceed?(Enter)")
             self.okno.bind("<Return>",self.gethelpbig)
@@ -83,7 +87,11 @@ class btn:
         try:
          self.ui.browser.get(self.url)
         except:
-         self.ui.browser = webdriver.Firefox()
-         self.ui.browser.get(self.url)
+         try:
+            self.ui.browser = webdriver.Firefox()
+            self.ui.browser.get(self.url)
+         except:
+            self.ui.browser = webdriver.Chrome() # for chrome users in case they dont have firefox
+            self.ui.browser.get(self.url)             
     def pak(self):
         self.buttn.pack()
