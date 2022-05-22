@@ -14,8 +14,6 @@ class site: # basic site
         self.exc_type = exc
         self.code = BeautifulSoup(pg,'lxml')
         self.url = url
-        self.votecount = 0 # the amount of votes, it only applies to stackoverflow sites but a reference is needed
-        self.vcounts = []
     def getpars(self): # gets site paragraphs
         paragraphs = self.code.find_all('p')
         return paragraphs
@@ -32,9 +30,13 @@ class site: # basic site
                     IsHelp = True
                     break
             if IsHelp:       
-                self.ui.lbl(x.text)
+                self.ui.lbl(x.text.strip())
 
 class stackoverflowsite(site):
+    def __init__(self,*args,**kwargs):
+        super(stackoverflowsite, self).__init__(*args, **kwargs)
+        self.votecount = 0 # the amount of votes, it only applies to stackoverflow sites but a reference is needed
+        self.vcounts = []
     def gethelp(self): # figures out the site type and gets results
         rightans = self.code.find_all('div',class_='answer js-answer accepted-answer') 
         for w in rightans: # use forloop to prevent crashing
