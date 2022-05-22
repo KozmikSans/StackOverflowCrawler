@@ -1,4 +1,6 @@
 async-generator==1.10
+asyncgui==0.5.3
+asynctkinter==0.2.0
 attrs==21.4.0
 beautifulsoup4==4.11.1
 bs4==0.0.1
@@ -12,6 +14,7 @@ lxml==4.8.0
 outcome==1.1.0
 pycparser==2.21
 pyOpenSSL==22.0.0
+pyperclip==1.8.2
 PySocks==1.7.1
 requests==2.27.1
 selenium==4.1.3
