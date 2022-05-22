@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 from srcclass import *
 from selenium import webdriver
+import pyperclip
 class UI:
     def __init__(self,exct,excob,exc_str):
         self.okno = Tk()
@@ -18,13 +19,12 @@ class UI:
         self.writetofile = IntVar() # the checkbox variable that gets turned on and off
         self.bigtext = ""
     def big(self,event):
+        self.clearwidg()
         if(self.didbig==False):
-            self.clearwidg()
+            self.cr.main()
             self.autocheckbox = Checkbutton(text = "Do you want to open the most upvoted site automatically next time? ",variable=self.writetofile, command=self.autopen)
             self.mainhelplabel = Label(text="Analyzing Websites...")
             self.mainhelplabel.pack()
-            
-            self.cr.main()
             self.pr("Websites Analyzed!")
             self.autocheckbox.pack()
 
@@ -49,17 +49,25 @@ class UI:
             self.gothelp = True
             for z in self.cr.sites:
                 z.gethelp()
+        try:
+            self.text_area.get(0)
+        except:
             if(len(self.cr.sites)==0):
-                print("No sites found")
-        
+                self.lbl("No sites found")
+            else:
+                self.lbl("No help was found :(")
         self.text_area.configure(state ='disabled')
             
     def pr(self,x): # prints text on the big helping label - works as a print or an error catcher
         self.mainhelplabel.config(text=x)
     def lbl(self,txt): # prints text to the ScrolledText so we can see what non-stackoverflow websites have for us
+        if(txt.strip()==""):
+            print("rip")
+            return
         self.text_area.insert(END, txt)
         self.text_area.insert(END, "\n")
     def clearwidg(self): # Used for better user experience
+        print("Spusteno")
         for x in self.okno.winfo_children():
             x.destroy()
     def create_button(self,url,txt,vtc,slvd): # creating buttons as a class so that every single one has a different command
@@ -84,6 +92,7 @@ class btn:
         else:
          self.buttn = Button(text = txt, command=self.gotopage)
     def gotopage(self): # the main command which opens our stackoverflow site
+        pyperclip.copy(self.url) # copys to clippboard
         try:
          self.ui.browser.get(self.url)
         except:
@@ -93,5 +102,3 @@ class btn:
          except:
             self.ui.browser = webdriver.Chrome() # for chrome users in case they dont have firefox
             self.ui.browser.get(self.url)             
-    def pak(self):
-        self.buttn.pack()
